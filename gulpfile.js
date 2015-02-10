@@ -1,5 +1,6 @@
 var gulp = require('gulp'),
-    uglify = require('gulp-uglify');
+    uglify = require('gulp-uglify'),
+    concat = require('gulp-concat');
     //plumber = require('gulp-plumber');
 
 function errorLog(error){
@@ -11,6 +12,7 @@ function errorLog(error){
 gulp.task('js_minify', function(){
     gulp.src('js/*.js')
         .pipe(uglify())
+        .pipe(concat('min.js'))
         .on('error', errorLog)
         .pipe(gulp.dest('build/js'));
 });
