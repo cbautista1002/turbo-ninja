@@ -1,9 +1,14 @@
 // Import necessary modules
+// gulp-plumber is not needed since we're implementing
+// our own error handling
 var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
     jshint = require('gulp-jshint');
-    //plumber = require('gulp-plumber');
+
+// Globals for easier management
+var JS_SEARCH = 'js/*.js',
+    JS_BUILD_DIR = 'build/js';
 
 // Instead of plumber, simply log error to console
 function errorLog(error){
@@ -11,20 +16,21 @@ function errorLog(error){
     this.emit('end');
 }
 
-// Minify JS Scripts - Compress and concat JS files
-gulp.task('js_minify', function(){
-    gulp.src('js/*.js')
+// Javascript
+// Lint, Compress and Concat JS files into one file
+gulp.task('js_task', function(){
+    gulp.src(JS_SEARCH)
         .pipe(jshint())
         .pipe(uglify())
         .pipe(concat('min.js'))
         .on('error', errorLog)
-        .pipe(gulp.dest('build/js'));
+        .pipe(gulp.dest(JS_BUILD_DIR));
 });
 
-// Watch changes in JS and CSS files and run tasks on save
+// Watch changes in JS files and run tasks on save
 gulp.task('watch', function(){
-    gulp.watch('js/**/*.js', ['js_minify']);
+    gulp.watch(JS_SEARCH, ['js_task']);
 });
 
 // Set up the default task to run when 'gulp' is called
-gulp.task('default', ['js_minify', 'watch']);
+gulp.task('default', ['js_task', 'watch']);
