@@ -5,7 +5,8 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
     jshint = require('gulp-jshint'),
-    mincss = require('gulp-minify-css');
+    mincss = require('gulp-minify-css'),
+    size = require('gulp-size');
 
 // Globals for easier management
 var JS_SEARCH    = 'js/*.js',
@@ -27,19 +28,23 @@ function errorLog(error){
 gulp.task('js_task', function(){
     gulp.src(JS_SEARCH)
         .pipe(jshint())
-        .pipe(uglify())
+        .pipe(size({showFiles: true}))
         .pipe(concat(JS_MIN_FILE))
+        .pipe(uglify())
         .on('error', errorLog)
-        .pipe(gulp.dest(JS_BUILD_DIR));
+        .pipe(gulp.dest(JS_BUILD_DIR))
+        .pipe(size({showFiles: true}));
 });
 
 // CSS
 // Minify and Concat CSS files into one file
 gulp.task('css_task', function(){
     gulp.src(CSS_SEARCH)
-        .pipe(mincss())
+        .pipe(size({showFiles: true}))
         .pipe(concat(CSS_MIN_FILE))
+        .pipe(mincss())
         .pipe(gulp.dest(CSS_BUILD_DIR))
+        .pipe(size({showFiles: true}));
 });
 
 // Watch changes in JS files and run tasks on save
