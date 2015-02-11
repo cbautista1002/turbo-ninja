@@ -1,0 +1,9 @@
+.totallyFake{
+    padding: 10px 20px 10px 20px;
+}
+#seriouslyFake{
+    border-width: 2px;
+    border-color: red;
+    border-style: solid;
+    border-radius: 4px;
+}
