@@ -10,14 +10,12 @@ var gulp   = require('gulp'),
     size   = require('gulp-size');
 
 // Globals for easier management
-var JS_SEARCH    = 'js/*.js',
-    JS_BUILD_DIR = 'build/js',
-    JS_MIN_FILE  = 'min.js';
-
-var CSS_SEARCH    = 'css/*.css',
-    CSS_BUILD_DIR = 'build/css',
-    CSS_MIN_FILE  = 'minified_css.css';
-
+var JS_SEARCH      = 'js/*.js',
+    JS_BUILD_DIR   = 'build/js',
+    JS_MIN_FILE    = 'min.js';
+var CSS_SEARCH     = 'css/*.css',
+    CSS_BUILD_DIR  = 'build/css',
+    CSS_MIN_FILE   = 'minified_css.css';
 var SASS_SEARCH    = 'scss/*.scss',
     SASS_BUILD_DIR = 'build/css',
     SASS_MIN_FILE  = 'minified_scss.css';
@@ -56,16 +54,20 @@ gulp.task('css_task', function(){
 // Compile SASS
 gulp.task('sass_task', function(){
     gulp.src(SASS_SEARCH)
+        .pipe(size({showFiles: true}))
         .pipe(sass())
+        .on('error', errorLog)
         .pipe(concat(SASS_MIN_FILE))
-        .pipe(gulp.dest(SASS_BUILD_DIR));
+        .pipe(gulp.dest(SASS_BUILD_DIR))
+        .pipe(size({showFiles: true}));
 });
 
-// Watch changes in JS files and run tasks on save
+// Watch changes in files and run tasks on save
 gulp.task('watch', function(){
     gulp.watch(JS_SEARCH, ['js_task']);
     gulp.watch(CSS_SEARCH, ['css_task']);
+    gulp.watch(SASS_SEARCH, ['sass_task']);
 });
 
 // Set up the default task to run when 'gulp' is called
-gulp.task('default', ['js_task', 'css_task', 'watch']);
+gulp.task('default', ['js_task', 'css_task', 'sass_task', 'watch']);
