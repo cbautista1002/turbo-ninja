@@ -1,12 +1,13 @@
 // Import necessary modules
 // gulp-plumber is not needed since we're implementing
 // our own error handling
-var gulp = require('gulp'),
+var gulp   = require('gulp'),
     uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
     jshint = require('gulp-jshint'),
     mincss = require('gulp-minify-css'),
-    size = require('gulp-size');
+    sass   = require('gulp-sass'),
+    size   = require('gulp-size');
 
 // Globals for easier management
 var JS_SEARCH    = 'js/*.js',
@@ -15,7 +16,11 @@ var JS_SEARCH    = 'js/*.js',
 
 var CSS_SEARCH    = 'css/*.css',
     CSS_BUILD_DIR = 'build/css',
-    CSS_MIN_FILE  = 'min.css';
+    CSS_MIN_FILE  = 'minified_css.css';
+
+var SASS_SEARCH    = 'scss/*.scss',
+    SASS_BUILD_DIR = 'build/css',
+    SASS_MIN_FILE  = 'minified_scss.css';
 
 // Instead of plumber, simply log error to console
 function errorLog(error){
@@ -45,6 +50,15 @@ gulp.task('css_task', function(){
         .pipe(mincss())
         .pipe(gulp.dest(CSS_BUILD_DIR))
         .pipe(size({showFiles: true}));
+});
+
+// SASS
+// Compile SASS
+gulp.task('sass_task', function(){
+    gulp.src(SASS_SEARCH)
+        .pipe(sass())
+        .pipe(concat(SASS_MIN_FILE))
+        .pipe(gulp.dest(SASS_BUILD_DIR));
 });
 
 // Watch changes in JS files and run tasks on save
