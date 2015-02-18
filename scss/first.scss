@@ -1,5 +1,14 @@
-$firstvar: 89;
+$firstvar: red;
+$secondvar: 1000px;
+$thirdvar: green;
+
+html {
+  width: $secondvar;
+}
 
 a {
-  padding: $firstvar;
+  color: $firstvar;
+  &:hover {
+    color: $thirdvar;
+  }
 }

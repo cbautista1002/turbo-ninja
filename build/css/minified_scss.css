@@ -1,2 +1,7 @@
+html {
+  width: 1000px; }
+
 a {
-  padding: 89; }
+  color: red; }
+  a:hover {
+    color: green; }
